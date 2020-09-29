@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import './TodoInput.css';
 
 interface TodoInputForm {
   addNewTodo: (title: string) => void;
@@ -9,17 +10,22 @@ const TodoInputForm: React.FC<TodoInputForm> = (props) => {
 
   const submitHandler = (event: React.FormEvent) => {
     event.preventDefault();
-    const enteredTitle = inputTitle.current!.value;
-    console.log(enteredTitle);
-    props.addNewTodo(enteredTitle);
+    if (inputTitle.current!.value.trim().length) {
+      const enteredTitle = inputTitle.current!.value;
+      props.addNewTodo(enteredTitle);
+      inputTitle.current!.value = '';
+    } else {
+      alert('Title cannot be empty');
+    }
   };
 
   return (
     <form onSubmit={submitHandler}>
-      <div>
+      <div className='form-control'>
         <label htmlFor='title-text'>What to do?</label>
         <input type='text' id='title-text' placeholder='Enter title here' ref={inputTitle} />
       </div>
+      <button>CREATE ITEM</button>
     </form>
   );
 };
